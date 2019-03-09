@@ -1,0 +1,78 @@
+;------------------------------------------------------------------------------
+;
+;       установщик db2cli 
+;
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;   Определяем некоторые константы
+;------------------------------------------------------------------------------
+
+; Имя приложения
+#define   Name       "clidriver"
+; Версия приложения
+#define   Version    "11.0.1"
+; Фирма-разработчик
+#define   Publisher  "IBM"
+; Сафт фирмы разработчика
+#define   URL        "http://www.ibm.com"
+; Имя исполняемого модуля
+#define   ExeName    "db2cli.exe"
+
+;------------------------------------------------------------------------------
+;   Параметры установки
+;------------------------------------------------------------------------------
+[Setup]
+
+; Уникальный идентификатор приложения, 
+;сгенерированный через Tools -> Generate GUID
+AppId={{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}
+
+; Прочая информация, отображаемая при установке
+AppName={#Name}
+AppVersion={#Version}
+AppPublisher={#Publisher}
+AppPublisherURL={#URL}
+AppSupportURL={#URL}
+AppUpdatesURL={#URL}
+
+; Путь установки по-умолчанию
+DefaultDirName={pf}\{#Name}
+; Имя группы в меню "Пуск"
+DefaultGroupName={#Name}
+
+; Каталог, куда будет записан собранный setup и имя исполняемого файла
+OutputDir=X:\projects\iss\db2cli\out\
+OutputBaseFileName=db2cli_setup
+
+; Файл иконки
+SetupIconFile=X:\projects\iss\db2cli\ibm.ico
+UninstallDisplayIcon={app}\ibm.ico
+
+; Параметры сжатия
+Compression=lzma
+SolidCompression=yes
+
+;------------------------------------------------------------------------------
+;   Опционально - некоторые задачи, которые надо выполнить при установке
+;------------------------------------------------------------------------------
+[Tasks]
+; Создание иконки на рабочем столе
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+
+;------------------------------------------------------------------------------
+;   Файлы, которые надо включить в пакет установщика
+;------------------------------------------------------------------------------
+[Files]
+
+; Исполняемый файл
+Source: "X:\projects\iss\db2cli\clidriver\bin\db2cli.exe"; DestDir: "{app}"; Flags: ignoreversion
+
+; Прилагающиеся ресурсы
+Source: "X:\projects\iss\db2cli\clidriver\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Run]
+Filename: "{app}\bin\db2cli.exe"; Parameters: "install -setup";
+
+[UninstallRun]
+Filename: "{app}\bin\db2cli.exe"; Parameters: "install -cleanup";
